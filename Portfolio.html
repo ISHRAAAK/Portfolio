@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Md Shamiul Islam Khan Ishrak — Impact Portfolio</title>
+<style>
+  /* Reset and base styles */
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0a0a0a;
+    color: #e6eef6;
+    position: relative;
+  }
+  a {
+    color: #4fc3f7;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  h1, h2 {
+    border-bottom: 1px solid #4fc3f7;
+    padding-bottom: 6px;
+  }
+  ul {
+    padding-left: 20px;
+  }
+  /* Canvas full page */
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    min-height: 100vh;
+    z-index: -1;
+    background: transparent;
+    pointer-events: none;
+  }
+  /* Profile pic top-right */
+  #profile-pic {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 180px;
+    height: 190px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 0 12px rgba(79,195,247,0.7);
+    z-index: 10;
+    border: 2px solid #4fc3f7;
+    background-color: #0a0a0a;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<!-- Replace the src below with your real image URL -->
+<img src="image1.jpeg" alt="Profile Picture" id="profile-pic" />
+
+<div class="container">
+  <h1>Md Shamiul Islam Khan Ishrak</h1>
+  <p><strong>Email:</strong> <a href="mailto:md.shamiul.islam.khan@g.bracu.ac.bd">md.shamiul.islam.khan@g.bracu.ac.bd</a></p>
+  <p><strong>Contact:</strong> 01703848984</p>
+  <p><strong>GitHub:</strong> <a href="https://github.com/ISHRAAAK" target="_blank" rel="noopener noreferrer">github.com/ISHRAAAK</a></p>
+
+  <h2>Bio</h2>
+  <p>Address: Bashundhara R/A, Road 8, Block D</p>
+  <p>Permanent Address: 91 Noyapara, Mymensingh</p>
+
+  <h2>Education</h2>
+  <ul>
+    <li>SSC (2017) – Premier Ideal High School, Science – GPA 5.0</li>
+    <li>HSC (2019) – Shaheed Police Smrity College, Science – GPA 4.17</li>
+    <li>BRAC University, CSE (Graduating 2025) – CGPA 3.05</li>
+  </ul>
+
+  <h2>University Life</h2>
+  <p>Member of BRACU Monon Club, Robotics Club, Cricket Club. Learned communication, leadership, teamwork, and event management.</p>
+
+  <h2>Skills</h2>
+  <p>Python, Database Management, Java, HTML, CSS, React, MS Tools</p>
+
+  <h2>Thesis</h2>
+  <p>Learning the Agent Specific Sub Optimal Bound for M.A.P.F (Multi-Agent Path Finding) – finding collision-free paths for multiple agents in shared environments.</p>
+
+  <h2>Soft Skills</h2>
+  <p>Calm under pressure, Sports analysis, Photography, Communication, Event Management, Writing, Data Annotation, MS Tools, Typing speed: 30 WPM</p>
+
+  <h2>Experience</h2>
+  <p>Intern at BRAC Technology Division (IT/Network Support) – Learned BRAC norms and values, network configuration, troubleshooting Windows and Active Directory issues.</p>
+</div>
+
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  function setCanvasSize() {
+    canvas.width = window.innerWidth;
+    canvas.height = document.documentElement.scrollHeight;
+  }
+
+  setCanvasSize();
+  window.addEventListener('resize', setCanvasSize);
+
+  let particlesArray;
+  const mouse = { x: undefined, y: undefined, radius: 150 };
+
+  window.addEventListener('mousemove', function(event) {
+    mouse.x = event.pageX;
+    mouse.y = event.pageY;
+  });
+
+  class Particle {
+    constructor(x, y, directionX, directionY, size) {
+      this.x = x;
+      this.y = y;
+      this.directionX = directionX;
+      this.directionY = directionY;
+      this.size = size;
+      this.color = '#4fc3f7';
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+    update() {
+      if(this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+      if(this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+
+      // Mouse interaction
+      let dx = mouse.x - this.x;
+      let dy = mouse.y - this.y;
+      let distance = Math.sqrt(dx*dx + dy*dy);
+
+      if(distance < mouse.radius + this.size) {
+        if(mouse.x < this.x && this.x < canvas.width - this.size*10) {
+          this.x += 3;
+        }
+        if(mouse.x > this.x && this.x > this.size*10) {
+          this.x -= 3;
+        }
+        if(mouse.y < this.y && this.y < canvas.height - this.size*10) {
+          this.y += 3;
+        }
+        if(mouse.y > this.y && this.y > this.size*10) {
+          this.y -= 3;
+        }
+      }
+
+      this.x += this.directionX;
+      this.y += this.directionY;
+      this.draw();
+    }
+  }
+
+  function init() {
+    particlesArray = [];
+    let numberOfParticles = Math.floor((canvas.width * canvas.height) / 9000);
+    for(let i = 0; i < numberOfParticles; i++) {
+      let size = (Math.random() * 3) + 1;
+      let x = Math.random() * (canvas.width - size * 2);
+      let y = Math.random() * (canvas.height - size * 2);
+      let directionX = (Math.random() * 2) - 1;
+      let directionY = (Math.random() * 2) - 1;
+      particlesArray.push(new Particle(x, y, directionX, directionY, size));
+    }
+  }
+
+  function connect() {
+    let opacityValue;
+    for(let a = 0; a < particlesArray.length; a++) {
+      for(let b = a; b < particlesArray.length; b++) {
+        let dx = particlesArray[a].x - particlesArray[b].x;
+        let dy = particlesArray[a].y - particlesArray[b].y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        if(distance < 120) {
+          opacityValue = 1 - (distance / 120);
+          ctx.strokeStyle = 'rgba(79,195,247,' + opacityValue + ')';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+          ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for(let i = 0; i < particlesArray.length; i++) {
+      particlesArray[i].update();
+    }
+    connect();
+    requestAnimationFrame(animate);
+  }
+
+  init();
+  animate();
+
+  // Re-init particles on scroll because canvas height changes
+  window.addEventListener('scroll', () => {
+    setCanvasSize();
+    init();
+  });
+</script>
+
+</body>
+</html>
