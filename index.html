@@ -58,6 +58,16 @@
     border: 2px solid #4fc3f7;
     background-color: #0a0a0a;
   }
+/* Mobile view adjustments */
+@media (max-width: 768px) {
+  #profile-pic {
+    position: static; /* Remove fixed positioning */
+    display: block;
+    margin: 20px auto; /* Center the image */
+    width: 150px; /* Slightly larger for mobile */
+    height: auto;
+  }
+}
 </style>
 </head>
 <body>
@@ -219,4 +229,5 @@
 
 </body>
 </html>
+
 
