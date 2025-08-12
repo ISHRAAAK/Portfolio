@@ -44,12 +44,12 @@
     background: transparent;
     pointer-events: none;
   }
-  /* Profile pic top-right */
+  /* Profile pic top-right for PC */
   #profile-pic {
     position: fixed;
     top: 20px;
     right: 20px;
-    width: 115px;
+    width: 130px;
     height: 130px;
     border-radius: 12px;
     object-fit: cover;
@@ -58,16 +58,16 @@
     border: 2px solid #4fc3f7;
     background-color: #0a0a0a;
   }
-/* Mobile view adjustments */
-@media (max-width: 768px) {
-  #profile-pic {
-    position: static; /* Remove fixed positioning */
-    display: block;
-    margin: 20px auto; /* Center the image */
-    width: 150px; /* Slightly larger for mobile */
-    height: auto;
+  /* Mobile view adjustments */
+  @media (max-width: 768px) {
+    #profile-pic {
+      position: static; /* remove fixed positioning */
+      display: block;
+      margin: 20px auto;
+      width: 130px;
+      height: 130px;
+    }
   }
-}
 </style>
 </head>
 <body>
@@ -149,7 +149,6 @@
       if(this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
       if(this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
 
-      // Mouse interaction
       let dx = mouse.x - this.x;
       let dy = mouse.y - this.y;
       let distance = Math.sqrt(dx*dx + dy*dy);
@@ -220,7 +219,6 @@
   init();
   animate();
 
-  // Re-init particles on scroll because canvas height changes
   window.addEventListener('scroll', () => {
     setCanvasSize();
     init();
@@ -229,5 +227,4 @@
 
 </body>
 </html>
-
 
